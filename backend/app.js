@@ -11,7 +11,13 @@ const PORT = process.env.PORT
 
 // middlewares
 app.use(express.json())
-app.use(cors())
+app.use(cors(
+    {
+        origin: ["https://expense-tracker-mern-frontend.vercel.app/"],
+        methods: ["POST","GET","DELETE"],
+        credentials: true
+    }
+));
 
 //routes
 readdirSync('./routes').map((route) => app.use('/api/v1', require('./routes/' + route))) // here we are creating a base URL for the API
