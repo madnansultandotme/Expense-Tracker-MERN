@@ -16,6 +16,7 @@ app.use(cors())
 //routes
 readdirSync('./routes').map((route) => app.use('/api/v1', require('./routes/' + route))) // here we are creating a base URL for the API
 
+mongoose.connect('mongodb+srv://zakir:zakir123@cluster0.0mrex.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 
 // creating an API
 app.get('/', (req, res)=> {
