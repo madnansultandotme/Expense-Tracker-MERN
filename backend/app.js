@@ -5,6 +5,8 @@ const {readdirSync} = require('fs')
 const { route } = require('./routes/transactions')
 const path = require('path');
 const app = express()
+const expenseRoutes = require('./routes/expense'); // Import the expense routes
+const incomeRoutes = require('./routes/income'); // Import the income routes
 
 require('dotenv').config()
 
@@ -20,29 +22,20 @@ app.use(cors(
     }
 ));
 
-//routes
-const routesPath = path.join(__dirname, 'routes');
+// Database connection
+mongoose.connect('mongodb+srv://zakir:zakir123@cluster0.0mrex.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
-if (fs.existsSync(routesPath)) {
-  fs.readdirSync(routesPath).forEach(file => {
-    const routePath = path.join(routesPath, file);
-    try {
-      const route = require(routePath);
-      app.use('/api/v1', route);
-    } catch (error) {
-      console.error(`Failed to load route file: ${routePath}`, error);
-    }
-  });
-} else {
-  console.error(`Routes directory not found: ${routesPath}`);
-}
+// Routes
+app.use('/api/v1/expenses', expenseRoutes); // Use expense routes
+app.use('/api/v1/incomes', incomeRoutes);   // Use income routes
 
-mongoose.connect('mongodb+srv://zakir:zakir123@cluster0.0mrex.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
-
-// creating an API
-app.get('/', (req, res)=> {
-    res.send('Hello World')
-})
+app.get('/', (req, res) => {
+    res.send('Hello World');
+});
 // creating a server
 const server = () =>{
     db() //calling to connect the Database
