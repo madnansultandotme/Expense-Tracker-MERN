@@ -1,4 +1,5 @@
 const express = require('express')
+const mongoose = require('mongoose'); // Import mongoose
 const cors = require('cors')
 const { db } = require('./db/db')
 const {readdirSync} = require('fs')
