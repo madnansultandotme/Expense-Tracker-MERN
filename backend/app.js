@@ -3,6 +3,7 @@ const cors = require('cors')
 const { db } = require('./db/db')
 const {readdirSync} = require('fs')
 const { route } = require('./routes/transactions')
+const path = require('path');
 const app = express()
 
 require('dotenv').config()
@@ -20,7 +21,21 @@ app.use(cors(
 ));
 
 //routes
-readdirSync('./routes').map((route) => app.use('/api/v1', require('./routes/' + route))) // here we are creating a base URL for the API
+const routesPath = path.join(__dirname, 'routes');
+
+if (fs.existsSync(routesPath)) {
+  fs.readdirSync(routesPath).forEach(file => {
+    const routePath = path.join(routesPath, file);
+    try {
+      const route = require(routePath);
+      app.use('/api/v1', route);
+    } catch (error) {
+      console.error(`Failed to load route file: ${routePath}`, error);
+    }
+  });
+} else {
+  console.error(`Routes directory not found: ${routesPath}`);
+}
 
 mongoose.connect('mongodb+srv://zakir:zakir123@cluster0.0mrex.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
 
