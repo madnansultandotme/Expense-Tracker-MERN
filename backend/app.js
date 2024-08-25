@@ -5,8 +5,6 @@ const {readdirSync} = require('fs')
 const { route } = require('./routes/transactions')
 const path = require('path');
 const app = express()
-const expenseRoutes = require('./routes/expense'); // Import the expense routes
-const incomeRoutes = require('./routes/income'); // Import the income routes
 
 require('dotenv').config()
 
@@ -30,8 +28,8 @@ mongoose.connect('mongodb+srv://zakir:zakir123@cluster0.0mrex.mongodb.net/?retry
   .catch(err => console.error('MongoDB connection error:', err));
 
 // Routes
-app.use('/api/v1/expenses', expenseRoutes); // Use expense routes
-app.use('/api/v1/incomes', incomeRoutes);   // Use income routes
+app.use('/api/v1', transactionsRoutes); // Use transactions routes with base path '/api/v1'
+
 
 app.get('/', (req, res) => {
     res.send('Hello World');
