@@ -1,8 +1,8 @@
 {
-  "version": 2,
+  "version": 1,
   "builds": [
     {
-      "src": "./app.js",
+      "src": "app.js",
       "use": "@vercel/node"
     }
   ],
@@ -12,4 +12,6 @@
       "dest": "/app.js"
     }
   ]
+}
+
 
