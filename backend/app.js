@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const mongoose = require('mongoose'); // Import mongoose
-const transactionsRoutes = require('./routes/transactions'); // Import transactions routes
+const mongoose = require('mongoose');
+const transactionsRoutes = require('./routes/transactions'); // Ensure this path is correct
 
 const app = express();
 
@@ -18,12 +18,12 @@ app.use(cors({
 }));
 
 // Database connection
-mongoose.connect('mongodb+srv://zakir:zakir123@cluster0.0mrex.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb+srv://zakir:zakir123@cluster0.0mrex.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.error('MongoDB connection error:', err));
 
 // Routes
-app.use('/api/v1', transactionsRoutes); // Use transactions routes with base path '/api/v1'
+app.use('/api/v1', transactionsRoutes);
 
 app.get('/', (req, res) => {
     res.send('Hello World');
@@ -36,4 +36,5 @@ const server = () => {
     });
 };
 
-
+// Call the server function to start the server
+server();
